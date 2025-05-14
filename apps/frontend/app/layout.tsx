@@ -7,9 +7,9 @@ import { ThemeProvider } from '@/components/theme-provider'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'Alpine Blockchain Creator',
-  description: 'Create your Ethereum private chain with Swiss precision',
-  generator: 'v0.dev',
+  title: 'JBCT Private Blockchain Creator',
+  description: 'Create your Ethereum private chain with AI',
+  authors: [{ name: 'crypto0627', url: 'https://github.com/crypto0627' }],
 }
 
 export default function RootLayout({

@@ -29,8 +29,8 @@ jobs:
           cache: 'pnpm'
 
       - name: Install dependencies
-        run: pnpm install
+        run: pnpm run install
 
       - name: Build
-        run: pnpm build --filter=frontend
+        run: pnpm run build
         working-directory: ./apps/frontend
