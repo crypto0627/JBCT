@@ -1,8 +1,8 @@
 import express, { Request, Response, NextFunction } from 'express'
-import passport from '@/config/passport'
-import { authMiddleware } from '@/middleware/authMiddleware'
-import { User } from '@/entities/User'
-import config from '@/config/config'
+import passport from '../config/passport'
+import { authMiddleware } from '../middleware/authMiddleware'
+import { User } from '../entities/User'
+import config from '../config/config'
 import crypto from 'crypto'
 import jwt from 'jsonwebtoken'
 

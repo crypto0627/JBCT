@@ -35,14 +35,14 @@ const config: Config = {
   port: Number(process.env.PORT) || 3001,
   nodeEnv: process.env.NODE_ENV || 'development',
   postgres: {
-    host: process.env.POSTGRES_HOST || 'postgres',
+    host: process.env.POSTGRES_HOST || 'localhost',
     port: Number(process.env.POSTGRES_PORT) || 5432,
     username: process.env.POSTGRES_USER || 'jakekuo',
     password: process.env.POSTGRES_PASSWORD || 'Testuser001',
     database: process.env.POSTGRES_NAME || 'jbct_db',
   },
   redis: {
-    host: process.env.REDIS_HOST || 'redis',
+    host: process.env.REDIS_HOST || 'localhost',
     port: Number(process.env.REDIS_PORT) || 6379,
   },
   frontendUrl: process.env.FRONTEND_URL || 'http://localhost:3000',

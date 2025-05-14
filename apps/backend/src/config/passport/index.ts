@@ -4,7 +4,7 @@ import { Strategy as GitHubStrategy } from 'passport-github2'
 import { Profile } from 'passport'
 import { VerifyCallback } from 'passport-oauth2'
 import appDataSource from '../postgres'
-import { User } from '@/entities/User'
+import { User } from '../../entities/User'
 import config from '../config'
 import crypto from 'crypto'
 

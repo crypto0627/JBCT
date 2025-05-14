@@ -1,10 +1,10 @@
 import express from 'express'
 import cors from 'cors'
-import config from '@/config/config'
+import config from './config/config'
 import cookieParser from 'cookie-parser'
-import { verifyApiKey } from '@/middleware/authMiddleware'
-import appDataSource from '@/config/postgres'
-import authRouter from '@/routes/auth.route'
+import { verifyApiKey } from './middleware/authMiddleware'
+import appDataSource from './config/postgres'
+import authRouter from './routes/auth.route'
 import passport from 'passport'
 
 const app = express()

@@ -1,8 +1,8 @@
 import { NextFunction, Request, Response } from 'express'
 import * as jwt from 'jsonwebtoken'
-import { redisClient } from '@/config/redis'
-import { errorResponse } from '@/utils/response'
-import config from '@/config/config'
+import { redisClient } from '../config/redis'
+import { errorResponse } from '../utils/response'
+import config from '../config/config'
 
 export async function authMiddleware(
   req: Request,

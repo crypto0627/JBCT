@@ -31,7 +31,7 @@ services:
     volumes:
       - redis_data:/data
     networks:
-      - backend
+      - jbct_network
     healthcheck:
       test: [ "CMD", "redis-cli", "-h", "redis", "ping" ]
       interval: 5s
@@ -46,7 +46,7 @@ services:
     volumes:
       - ./packages/postgres_backups:/var/backups
     networks:
-      - backend
+      - jbct_network
     depends_on:
       postgres:
         condition: service_healthy
@@ -105,6 +105,13 @@ services:
     networks:
       - jbct_network
     restart: always
+
+volumes:
+  postgres_data:
+  postgres_config:
+  postgres_logs:
+  postgres_backups:
+  redis_data:
 
 networks:
   jbct_network:
