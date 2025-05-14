@@ -1,0 +1,111 @@
+services:
+  postgres:
+    image: postgres:13
+    container_name: postgres
+    environment:
+      POSTGRES_USER: jakekuo
+      POSTGRES_PASSWORD: Testuser001
+      POSTGRES_DB: jbct_db
+    ports:
+      - 5432:5432
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - postgres_config:/etc/postgresql/postgresql.conf
+      - postgres_logs:/var/log/postgresql
+      - postgres_backups:/var/backups
+    networks:
+      - jbct_network
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U jakekuo -d jbct_db -h postgres" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    restart: always
+  
+  redis:
+    image: redis:latest
+    container_name: redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - backend
+    healthcheck:
+      test: [ "CMD", "redis-cli", "-h", "redis", "ping" ]
+      interval: 5s
+      retries: 5
+      start_period: 5s
+    restart: always
+  
+  pg_backup:
+    image: postgres:13
+    container_name: pg-backup
+    restart: always
+    volumes:
+      - ./packages/postgres_backups:/var/backups
+    networks:
+      - backend
+    depends_on:
+      postgres:
+        condition: service_healthy
+    entrypoint: [ "/bin/sh", "-c" ]
+    command: >
+      while true; do
+        sleep $((86400 - $(date +%s) % 86400));
+        TIMESTAMP=$$(date +\%Y\%m\%d);
+        PGPASSWORD=Testuser001 pg_dump -h postgres -U jakekuo -d jbct_db > /var/backups/backup_$$TIMESTAMP.sql;
+      done
+
+  frontend:
+    build:
+      context: .
+      dockerfile: ./apps/frontend/Dockerfile
+    container_name: frontend
+    ports:
+      - "3000:3000"
+    environment:
+      - NEXT_PUBLIC_API_URL=http://localhost:3001
+      - NEXT_PUBLIC_API_KEY=hello_jbct_api_key
+    networks:
+      - jbct_network
+    restart: always
+
+  backend:
+    build:
+      context: .
+      dockerfile: ./apps/backend/Dockerfile
+    container_name: backend
+    ports:
+      - "3001:3001"
+    environment:
+      - NODE_ENV=production
+      - PORT=3001
+      - JWT_SECRET=hello_jbct_jwt_secret
+      - POSTGRES_USER=jakekuo
+      - POSTGRES_PASSWORD=Testuser001
+      - POSTGRES_DB=jbct_db
+      - POSTGRES_HOST=postgres
+      - POSTGRES_PORT=5432
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - FRONTEND_URL=http://localhost:3000
+      - DOMAIN=localhost
+      - API_KEY=hello_jbct_api_key
+      - GOOGLE_CLIENT_ID=hello_jbct_google_client_id
+      - GOOGLE_CLIENT_SECRET=hello_jbct_google_client_secret
+      - GITHUB_CLIENT_ID=hello_jbct_github_client_id
+      - GITHUB_CLIENT_SECRET=hello_jbct_github_client_secret
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - jbct_network
+    restart: always
+
+networks:
+  jbct_network:
+    driver: bridge

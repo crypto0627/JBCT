@@ -1,0 +1,42 @@
+{
+  "name": "backend",
+  "private": true,
+  "scripts": {
+    "docker-rebuild": "docker-compose down -v && docker-compose build && docker-compose up -d",
+    "docker-restart": "docker-compose restart",
+    "build": "turbo run build",
+    "dev": "turbo run dev",
+    "lint": "turbo run lint",
+    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "check-types": "turbo run check-types"
+  },
+  "devDependencies": {
+    "prettier": "^3.5.3",
+    "turbo": "^2.5.3",
+    "typescript": "5.8.2"
+  },
+  "packageManager": "pnpm@9.0.0",
+  "engines": {
+    "node": ">=20"
+  },
+  "prettier": {
+    "singleQuote": true,
+    "trailingComma": "all",
+    "semi": false,
+    "useTabs": false,
+    "tabWidth": 2,
+    "bracketSpacing": true,
+    "bracketSameLine": false,
+    "arrowParens": "always",
+    "overrides": [
+      {
+        "files": "*.json",
+        "options": {
+          "printWidth": 80,
+          "tabWidth": 2,
+          "useTabs": false
+        }
+      }
+    ]
+  }
+}
